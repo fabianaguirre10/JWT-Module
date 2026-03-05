@@ -2,6 +2,19 @@
 
 Detailed architecture documentation for jwt-module.
 
+![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-4.21-000000?logo=express&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-HS256-purple?logo=jsonwebtokens&logoColor=white)
+![Zod](https://img.shields.io/badge/Zod-4.3-3E67B1?logo=zod&logoColor=white)
+![bcrypt](https://img.shields.io/badge/bcrypt-5.1-orange?logo=letsencrypt&logoColor=white)
+![Helmet](https://img.shields.io/badge/Helmet-8.1-lightgrey?logo=helmet&logoColor=white)
+![CORS](https://img.shields.io/badge/CORS-Configurable-blue)
+![CUID2](https://img.shields.io/badge/CUID2-IDs-teal)
+![Jest](https://img.shields.io/badge/Jest-29.7-C21325?logo=jest&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Multi--stage-2496ED?logo=docker&logoColor=white)
+![Azure Pipelines](https://img.shields.io/badge/Azure_Pipelines-CI%2FCD-0078D7?logo=azurepipelines&logoColor=white)
+
 ---
 
 ## Table of Contents

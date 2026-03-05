@@ -2,10 +2,16 @@
 
 **A standalone JWT authentication module built with Express and TypeScript.**
 
-![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue?logo=typescript&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-4.21-000000?logo=express&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-HS256-purple?logo=jsonwebtokens&logoColor=white)
+![Zod](https://img.shields.io/badge/Zod-4.3-3E67B1?logo=zod&logoColor=white)
+![bcrypt](https://img.shields.io/badge/bcrypt-5.1-orange?logo=letsencrypt&logoColor=white)
+![Helmet](https://img.shields.io/badge/Helmet-8.1-lightgrey?logo=helmet&logoColor=white)
+![Jest](https://img.shields.io/badge/Jest-29.7-C21325?logo=jest&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)
+![Azure Pipelines](https://img.shields.io/badge/Azure_Pipelines-CI%2FCD-0078D7?logo=azurepipelines&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
@@ -19,11 +25,6 @@ graph LR
     Client([Client]) -->|HTTP| API[Express API Layer]
     API -->|AuthService interface| Auth[Auth Service Core]
     Auth -->|read/write| Store[(In-Memory Store)]
-
-    style Client fill:#e1f5fe
-    style API fill:#fff3e0
-    style Auth fill:#e8f5e9
-    style Store fill:#fce4ec
 ```
 
 > **Note:** All data is lost on restart. For production use, implement a persistent backing store behind the existing interfaces.
@@ -43,7 +44,7 @@ graph LR
 - :wastebasket: **Delete Account** -- requires password confirmation, full cleanup
 - :mag: **Get Profile** -- returns user ID, email, and creation date
 - :white_check_mark: **Health Check** -- `GET /health` for uptime monitoring
-- :helmet_with_white_cross: **Helmet** -- security headers on all responses
+- :shield: **Helmet** -- security headers on all responses
 - :globe_with_meridians: **CORS** -- configurable allowed origins
 - :pencil: **Zod Validation** -- schema validation on all request bodies
 
@@ -286,13 +287,6 @@ flowchart TD
     LOCK -->|Yes| R423([423 Locked])
 
     PROCESS --> RESP([Success Response])
-
-    style REQ fill:#e1f5fe
-    style RESP fill:#c8e6c9
-    style R401 fill:#ffcdd2
-    style R429 fill:#ffcdd2
-    style R400 fill:#ffcdd2
-    style R423 fill:#ffcdd2
 ```
 
 ### Security Summary
